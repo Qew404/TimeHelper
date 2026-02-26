@@ -10,6 +10,7 @@ namespace TimeHelper
         private Timer pauseTimer;
         private TimeSpan remainingTime;
         private TimeSpan totalPauseTime;
+        private TimeSpan totalPastTime;
         private bool isPaused;
         private bool isTimerRunning; // Флаг что таймер вообще запущен
 
@@ -103,13 +104,14 @@ namespace TimeHelper
             int hours = int.Parse(selected.Split(' ')[0]);
 
             remainingTime = TimeSpan.FromHours(hours);
-
+            totalPastTime = TimeSpan.Zero;
             totalPauseTime = TimeSpan.Zero;
             isPaused = false;
             isTimerRunning = true;
 
             UpdateTimerDisplay();
             UpdatePauseDisplay();
+            DisplayElapsedTime();
             timer.Start();
 
             button2.Enabled = true;
@@ -162,7 +164,11 @@ namespace TimeHelper
 
                 button2.Enabled = false;
                 button3.Enabled = false;
+                return;
             }
+
+            totalPastTime = totalPastTime.Add(TimeSpan.FromSeconds(1));
+            DisplayElapsedTime();
         }
 
         // Тик таймера паузы
@@ -177,25 +183,29 @@ namespace TimeHelper
             listBox2.Items.Clear();
             listBox2.Items.Add(remainingTime.ToString(@"hh\:mm\:ss"));
         }
-
+        private void DisplayElapsedTime()
+        {
+            listBox1.Items.Clear();
+            listBox1.Items.Add(totalPastTime.ToString(@"hh\:mm\:ss"));
+        }
         private void UpdatePauseDisplay()
         {
             label4.Text = "Общее время пауз: " + totalPauseTime.ToString(@"hh\:mm\:ss");
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e) 
-        { 
-
-        }
-        private void label1_Click(object sender, EventArgs e) 
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-        private void label4_Click(object sender, EventArgs e) 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }
@@ -206,6 +216,10 @@ namespace TimeHelper
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
